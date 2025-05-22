@@ -57,6 +57,25 @@ object main {
       discount
     }
 
+    def cheeseWineQualifier(order: (Timestamp, String, Date, Int, Double, Int, String, Double, String, String)): Boolean = {
+      val cheese_wine: Boolean = if (order._7.equals("Wine") || order._7.equals("Cheese")) true else false
+      cheese_wine
+    }
+
+    def cheeseWineCalculate(order: (Timestamp, String, Date, Int, Double, Int, String, Double, String, String)): Double = {
+      val cheeseWine: String = order._7
+      val discount: Double = if (cheeseWine.equals("Wine")) {
+        0.05
+      }
+      else if (cheeseWine.equals("Cheese")) {
+        0.1
+      }
+      else
+        0.0
+
+      discount
+    }
+
 
 
   }
