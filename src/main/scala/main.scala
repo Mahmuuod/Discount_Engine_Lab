@@ -76,6 +76,20 @@ object main {
       discount
     }
 
+    def MerchQualifier(order: (Timestamp, String, Date, Int, Double, Int, String, Double, String, String)): Boolean = {
+      val transactionDate = order._1.toInstant.atZone(ZoneId.systemDefault()).toLocalDate
+
+      val targetMonthDay = MonthDay.parse("--03-23") // Note the -- prefix for MonthDay
+
+      val transactionMonthDay = MonthDay.from(transactionDate)
+
+      transactionMonthDay == targetMonthDay
+    }
+
+    def MerchCalculate(order: (Timestamp, String, Date, Int, Double, Int, String, Double, String, String)): Double = {
+      0.5
+    }
+
 
 
   }
