@@ -11,6 +11,35 @@ import java.time.format.DateTimeFormatter
 object main {
   def main(args: Array[String]): Unit = {
 
+    //logger object
+    object SimpleLogger {
+      private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+      private val logFilePath = "./logs/application.log" // Log file name
+
+      private def writeToLog(level: String, message: String): Unit = {
+        val timestamp = LocalDateTime.now().format(formatter)
+        val logLine = f"$timestamp%-20s $level%-8s $message"
+
+        // Print to console
+        println(logLine)
+
+        // Append to file
+        val writer = new PrintWriter(new FileWriter(logFilePath, true))
+        try {
+          writer.println(logLine)
+        } finally {
+          writer.close()
+        }
+      }
+
+      def info(message: String): Unit = writeToLog("INFO", message)
+
+      def debug(message: String): Unit = writeToLog("DEBUG", message)
+
+      def warn(message: String): Unit = writeToLog("WARN", message)
+
+      def error(message: String): Unit = writeToLog("ERROR", message)
+    }
 
     //timestamp,product_name,expiry_date,quantity,unit_price,channel,payment_method
     //timestamp,product_name,expiry_date,quantity,unit_price,daysBetween
