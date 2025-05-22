@@ -125,6 +125,16 @@ object main {
 
     }
 
+    def paymentQualifier(order: (Timestamp, String, Date, Int, Double, Int, String, Double, String, String)): Boolean = {
+      val payment_method = order._10
+      val result = if (payment_method.equals("Visa")) true else false
+      result
+
+    }
+
+    def paymentCalculate(order: (Timestamp, String, Date, Int, Double, Int, String, Double, String, String)): Double = {
+      0.05
+    }
 
 
   }
