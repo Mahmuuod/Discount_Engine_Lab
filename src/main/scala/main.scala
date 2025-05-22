@@ -225,6 +225,56 @@ object main {
         SimpleLogger.error(s"An error occurred on Data Processing: ${e.getMessage}")
         List.empty[(String, Double, Double, Double)] // return an empty list
     }
+
+    val url = "jdbc:postgresql://localhost:5432/postgres"
+    val username = "postgres"
+    val password = "123"
+
+    var connection: Connection = null
+
+    try {
+      // Connect to PostgreSQL
+      connection = DriverManager.getConnection(url, username, password)
+      println("Connected to PostgreSQL!")
+
+      // Do some query (optional)
+      val createTableSQL =
+        """
+          |CREATE TABLE IF NOT EXISTS product_discounts (
+          |  id SERIAL PRIMARY KEY,
+          |  product_name VARCHAR(255),
+          |  original_price DOUBLE PRECISION,
+          |  discount DOUBLE PRECISION,
+          |  final_price DOUBLE PRECISION
+          |);
+           """.stripMargin
+
+      val stmt = connection.createStatement()
+      stmt.execute(createTableSQL)
+
+
+      val insertSQL =
+        "INSERT INTO product_discounts (product_name, original_price, discount, final_price) VALUES (?, ?, ?, ?)"
+      val pstmt: PreparedStatement = connection.prepareStatement(insertSQL)
+
+      for ((product, original, discount, finalPrice) <- result) {
+        pstmt.setString(1, product)
+        pstmt.setDouble(2, original)
+        pstmt.setDouble(3, discount)
+        pstmt.setDouble(4, finalPrice)
+        pstmt.addBatch()
+      }
+
+      pstmt.executeBatch() // ← sends all at once
+
+      SimpleLogger.info(s"The Data Has Been Written to DB Successfully")
+    } catch {
+      case e: Exception =>
+        SimpleLogger.error(s"An error occurred on Writing to DB: ${e.getMessage}")
+        e.printStackTrace()
+    } finally {
+      if (connection != null) connection.close()
+    }
   }
 }
 
