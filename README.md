@@ -140,10 +140,7 @@ git push -u origin main
 
 
 ---
-## Comment:
-- This Code is moduled and commented with the help of LLM
-- If you want to see my version, go to a first-version branch
----
+
 
 ## 👨‍💻 Author
 
