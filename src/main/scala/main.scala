@@ -38,7 +38,24 @@ object main {
     })
 
 
+    def expirationQualifier(order: (Timestamp, String, Date, Int, Double, Int, String, Double, String, String)): Boolean = {
+      val daysBetween = order._6
+      val result = if (daysBetween > 0 && daysBetween < 30) {
+        true
+      }
+      else {
+        false
+      }
 
+      result
+    }
+
+    def expirationCalculate(order: (Timestamp, String, Date, Int, Double, Int, String, Double, String, String)): Double = {
+      val daysBetween = order._6
+      val discount = ((30 - daysBetween) / 100.0)
+
+      discount
+    }
 
 
 
