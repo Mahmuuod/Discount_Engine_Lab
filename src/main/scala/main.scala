@@ -200,7 +200,31 @@ object main {
         discount.toVector.sorted.reverse.take(2).sum / 2
     }
 
+    // main calculation block , uses previous functions
+    val result: List[(String, Double, Double, Double)]=try {
 
+      val final_discount = (orders).map(order => calculate_discount(order, rules))
+
+      val product_prices = (orders).map(x => BigDecimal(x._5 * x._4).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble)
+
+      val final_price = product_prices.zip(final_discount).
+        map { case (a, b) => BigDecimal(a - (a * b)).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble } //a*b discount amount , a the original price
+
+      val products = (orders).map(x => x._2)
+
+      val products_prices = products.zip(product_prices).zip(final_discount).zip( final_price).map { case (((product, fPrice), tPrice), discount) =>
+        (product, fPrice.toDouble, tPrice.toDouble, discount.toDouble)
+      }
+
+      SimpleLogger.info(s"The Data Has Been Calculated Successfully")
+
+      products_prices
+    }
+    catch {
+      case e: Exception =>
+        SimpleLogger.error(s"An error occurred on Data Processing: ${e.getMessage}")
+        List.empty[(String, Double, Double, Double)] // return an empty list
+    }
   }
 }
 
