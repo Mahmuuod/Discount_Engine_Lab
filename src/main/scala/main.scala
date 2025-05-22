@@ -90,6 +90,26 @@ object main {
       0.5
     }
 
+    def quantityQualifier(order: (Timestamp, String, Date, Int, Double, Int, String, Double, String, String)): Boolean = {
+      val quantity = order._4
+      val result = if (quantity > 5) true else false
+      result
+
+    }
+
+    def quantityCalculate(order: (Timestamp, String, Date, Int, Double, Int, String, Double, String, String)): Double = {
+      val unitPrice = order._5
+      val quantity = order._4.toDouble
+
+      val discount: Double = if (quantity >= 6 && quantity <= 9) 0.05
+      else if (quantity > 9 && quantity <= 14) 0.07
+      else if (quantity >= 15) 0.1
+      else 0.0
+
+      discount
+
+    }
+
 
 
   }
