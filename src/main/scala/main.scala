@@ -136,6 +136,22 @@ object main {
       0.05
     }
 
+    // all rules paired in tuples
+    val expirationRule = (expirationQualifier _, expirationCalculate _)
+    val quantityRule = (quantityQualifier _, quantityCalculate _)
+    val MerchRule = (MerchQualifier _, MerchCalculate _)
+    val cheeseWineRule = (cheeseWineQualifier _, cheeseWineCalculate _)
+    val channelRule = (channelQualifier _, channelCalculate _)
+    val paymentRule = (paymentQualifier _, paymentCalculate _)
+
+    //list of tuples , each tuple contains a rule
+    val rules: List[
+      (
+        ((Timestamp, String, Date, Int, Double, Int, String, Double, String, String)) => Boolean,
+          ((Timestamp, String, Date, Int, Double, Int, String, Double, String, String)) => Double
+        )
+    ] = List(expirationRule, quantityRule, MerchRule, cheeseWineRule, channelRule, paymentRule)
+
 
   }
 }
