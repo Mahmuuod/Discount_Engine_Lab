@@ -153,6 +153,25 @@ object main {
     ] = List(expirationRule, quantityRule, MerchRule, cheeseWineRule, channelRule, paymentRule)
 
 
+    // higher order func , takes list of rules , each rule is a tuple of two funcs , and takes an order to be applied on this list
+    def calculate_discount(order: (Timestamp, String, Date, Int, Double, Int, String, Double, String, String), rules: List[(
+      ((Timestamp, String, Date, Int, Double, Int, String, Double, String, String)) => Boolean,
+        ((Timestamp, String, Date, Int, Double, Int, String, Double, String, String)) => Double
+      )
+    ]): Double = {
+
+      val discount = rules.map(x => {
+        if (x._1(order)) x._2(order) else 0.0
+      }).filter(_ > 0) // filter out 0.0
+      if (discount.isEmpty)
+        0.0
+      else if (discount.size == 1)
+        discount(0)
+      else
+        discount.toVector.sorted.reverse.take(2).sum / 2
+    }
+
+
   }
 }
 
