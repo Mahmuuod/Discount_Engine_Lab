@@ -111,6 +111,21 @@ object main {
     }
 
 
+    def channelQualifier(order: (Timestamp, String, Date, Int, Double, Int, String, Double, String, String)): Boolean = {
+      val channel = order._9
+      val result = if (channel.equals("App")) true else false
+      result
+
+    }
+
+    def channelCalculate(order: (Timestamp, String, Date, Int, Double, Int, String, Double, String, String)): Double = {
+      val quantity = order._4
+      val discount: Double = (Math.ceil(quantity.toDouble / 5) * 5 * 0.01).min(0.5)
+      discount
+
+    }
+
+
 
   }
 }
